@@ -1,21 +1,24 @@
 package Models;
 
 public class Llibre {
-
-    int id;
-    String titol;
-    String autor;
-    double pes;
+    private int id;
+    private String titol;
+    private String autor;
+    private double pes;
 
     boolean llogat = false;
 
-    public Llibre(int id, String nom, String autor, double pes, boolean llogat) {
+    public Llibre(int id, String titol, String autor, double pes, boolean llogat) {
         this.id = id;
         this.titol = titol;
         this.autor = autor;
         this.pes = pes;
     }
 
+    /**
+     *
+     * @return haha
+     */
     public int getId() {
         return id;
     }
@@ -32,11 +35,26 @@ public class Llibre {
         return llogat;
     }
 
-    public void setLlogat() {
+    public double getPes() {
+        return pes;
+    }
+
+    public void setLlogat(boolean llogat) {
         this.llogat = llogat;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public String toString() {
-        return "ID:" + id + ", Títol:" + titol + ", Autor:" + autor + ", Pes:" + pes;
+        return "Llibre{" +
+                "llogat=" + llogat +
+                ", autor='" + autor + '\'' +
+                ", pes=" + pes +
+                ", id=" + id +
+                ", titol='" + titol + '\'' +
+                '}';
     }
 }

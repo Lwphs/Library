@@ -6,4 +6,5 @@ public class Usuari {
     String cognom;
     String correuElectronic;
 
+
 }
