@@ -7,10 +7,11 @@ public class Book {
 
     private boolean booked = false;
 
-    public Book(int id, String title, String author) {
-        this.id = id;
-        this.title = title;
+    public Book(int id,  String title, String author, boolean booked) {
+        this.booked = booked;
         this.author = author;
+        this.title = title;
+        this.id = id;
     }
 
     public int getId() {
@@ -35,11 +36,11 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Llibre{" +
-                "llogat=" + booked +
-                ", autor='" + author + '\'' +
+        return "Book{" +
                 ", id=" + id +
-                ", titol='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", rented=" + booked +
                 '}';
     }
 }

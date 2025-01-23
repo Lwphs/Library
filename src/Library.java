@@ -10,54 +10,60 @@ public class Library {
     private static final ArrayList<Book> BOOKS = new ArrayList<>();
     private static final ArrayList<User> USERS = new ArrayList<>();
 
-    static int id = 1;
+    static int idBook = 1;
+    static int idUser = 1;
+
 
     public static void main(String[] args) {
 
-        int opcio;
+        initializingBooksAndUsers();
+
+        int option;
 
         do {
-            System.out.println("\n*** WELCOME TO THE LIBRARY ***");
+            System.out.println("*** WELCOME TO THE LIBRARY ***");
             System.out.println("1. Show Books");
-            System.out.println("2. Show Users");
-            System.out.println("3. Add Book");
-            System.out.println("4. Rent Book");
-            System.out.println("5. Return Book");
-            System.out.println("6. Exit");
+            System.out.println("2. Add Book");
+            System.out.println("3. Rent Book");
+            System.out.println("4. Return Book");
+            System.out.println("5. Exit");
             System.out.print("Option: ");
-            opcio = INPUT.nextInt();
+            option = INPUT.nextInt();
 
             INPUT.nextLine();
 
-            switch (opcio) {
+            switch (option) {
                 case 1:
                     showBooks();
                     break;
                 case 2:
-                    showUsers();
-                    break;
-                case 3:
                     addBooks();
                     break;
-                case 4:
+                case 3:
                     rentBook();
                     break;
-                case 5:
+                case 4:
                     returnBook();
                     break;
-                case 6:
+                case 5:
                     System.out.println("Exiting the program...");
                     break;
                 default:
                     System.out.println("Not a valid option.");
             }
-        } while (opcio != 6);
+        } while (option != 5);
     }
 
-    private static void showUsers() {
-        for (int i = 0; i < USERS.size(); i++) {
-            System.out.println(USERS.get(i));
-        }
+    private static void initializingBooksAndUsers() {
+        BOOKS.add(new Book(idBook++, "Book 1", "Author 1", false));
+        BOOKS.add(new Book(idBook++, "Book 2", "Author 2", false));
+        BOOKS.add(new Book(idBook++, "Book 3", "Author 3", false));
+        BOOKS.add(new Book(idBook++, "Book 4", "Author 4", false));
+
+        USERS.add(new User(idUser++, "Arnau", "Garcia", "Arnau@gmail.com"));
+        USERS.add(new User(idUser++, "Marcel", "Feliu", "Marcel@gmail.com"));
+        USERS.add(new User(idUser++, "Marcel", "Roquet", "MarcelR@gmail.com"));
+        USERS.add(new User(idUser++, "Pau", "Solé", "Pau@gmail.com"));
     }
 
     private static void showBooks() {
@@ -67,27 +73,48 @@ public class Library {
     }
 
     private static void rentBook() {
-        System.out.println("Select a book:");
+        System.out.print("Who wants to rent? ");
+        String name = INPUT.nextLine();
+
+        showBooks();
+
+        String title = INPUT.nextLine();
         for (int i = 0; i < BOOKS.size(); i++) {
-            System.out.println((i + 1) + ".- " + BOOKS.get(i));
+            if (BOOKS.get(i).getTitle().equals(title)) {
+                BOOKS.get(i).setBooked(true);
+
+                System.out.println(name + " rented " + BOOKS.get(i).getTitle());
+            }
+        }
+    }
+
+    private static void returnBook() {
+        System.out.print("Who is returning? ");
+        String name = INPUT.nextLine();
+
+        System.out.println("Select a book you want to return: ");
+
+        showBooks();
+
+        String title = INPUT.nextLine();
+        for (int i = 0; i < BOOKS.size(); i++) {
+            if (BOOKS.get(i).getTitle().equals(title)) {
+                BOOKS.get(i).setBooked(false);
+
+                System.out.println(name + " returned " + BOOKS.get(i).getTitle());
+            }
         }
     }
 
     private static void addBooks() {
-
         System.out.print("Enter book's name: ");
         String title = INPUT.nextLine();
 
         System.out.print("Enter author's name: ");
         String author = INPUT.nextLine();
 
-        BOOKS.add(new Book(id, title, author));
-
-        id++;
+        BOOKS.add(new Book(idBook++, title, author, false));
 
         System.out.println("Bookio addio");
-    }
-
-    private static void returnBook() {
     }
 }
