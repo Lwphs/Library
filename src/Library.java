@@ -7,8 +7,8 @@ import java.util.Scanner;
 public class Library {
 
     static final Scanner INPUT = new Scanner(System.in);
-    private static final ArrayList<Book> BOOKS = new ArrayList<>();
-    private static final ArrayList<User> USERS = new ArrayList<>();
+    private static final ArrayList<Book> books = new ArrayList<>();
+    private static final ArrayList<User> users = new ArrayList<>();
 
     static int idBook = 1;
     static int idUser = 1;
@@ -21,16 +21,16 @@ public class Library {
         int option;
 
         do {
-            System.out.println("*** WELCOME TO THE LIBRARY ***");
+            System.out.println("\n *** WELCOME TO THE LIBRARY ***");
             System.out.println("1. Show Books");
             System.out.println("2. Add Book");
             System.out.println("3. Rent Book");
             System.out.println("4. Return Book");
-            System.out.println("5. Exit");
+            System.out.println("5. Add User");
+            System.out.println("6. Show Users");
+            System.out.println("7. Exit");
             System.out.print("Option: ");
-            option = INPUT.nextInt();
-
-            INPUT.nextLine();
+            option = readInteger(1, 6);
 
             switch (option) {
                 case 1:
@@ -46,64 +46,35 @@ public class Library {
                     returnBook();
                     break;
                 case 5:
+                    addUser();
+                    break;
+                case 6:
+                    showUsers("These are the current users.");
+                    break;
+                case 7:
                     System.out.println("Exiting the program...");
                     break;
                 default:
                     System.out.println("Not a valid option.");
             }
-        } while (option != 5);
+        } while (option != 7);
     }
 
     private static void initializingBooksAndUsers() {
-        BOOKS.add(new Book(idBook++, "Book 1", "Author 1", false));
-        BOOKS.add(new Book(idBook++, "Book 2", "Author 2", false));
-        BOOKS.add(new Book(idBook++, "Book 3", "Author 3", false));
-        BOOKS.add(new Book(idBook++, "Book 4", "Author 4", false));
+        books.add(new Book(idBook++, "Book 1", "Author 1", false));
+        books.add(new Book(idBook++, "Book 2", "Author 2", false));
+        books.add(new Book(idBook++, "Book 3", "Author 3", false));
+        books.add(new Book(idBook++, "Book 4", "Author 4", false));
 
-        USERS.add(new User(idUser++, "Arnau", "Garcia", "Arnau@gmail.com"));
-        USERS.add(new User(idUser++, "Marcel", "Feliu", "Marcel@gmail.com"));
-        USERS.add(new User(idUser++, "Marcel", "Roquet", "MarcelR@gmail.com"));
-        USERS.add(new User(idUser++, "Pau", "Solé", "Pau@gmail.com"));
+        users.add(new User(idUser++, "Arnau", "Garcia", "Arnau@gmail.com"));
+        users.add(new User(idUser++, "Marcel", "Feliu", "Marcel@gmail.com"));
+        users.add(new User(idUser++, "Marcel", "Roquet", "MarcelR@gmail.com"));
+        users.add(new User(idUser++, "Pau", "Solé", "Pau@gmail.com"));
     }
 
     private static void showBooks() {
-        for (int i = 0; i < BOOKS.size(); i++) {
-            System.out.println(BOOKS.get(i));
-        }
-    }
-
-    private static void rentBook() {
-        System.out.print("Who wants to rent? ");
-        String name = INPUT.nextLine();
-
-        showBooks();
-
-        String title = INPUT.nextLine();
-        for (int i = 0; i < BOOKS.size(); i++) {
-            if (BOOKS.get(i).getTitle().equals(title)) {
-                BOOKS.get(i).setBooked(true);
-
-                System.out.println(name + " rented " + BOOKS.get(i).getTitle());
-            }
-        }
-    }
-
-    private static void returnBook() {
-        System.out.print("Who is returning? ");
-        String name = INPUT.nextLine();
-
-        System.out.println("Select a book you want to return: ");
-
-        showBooks();
-
-        String title = INPUT.nextLine();
-        for (int i = 0; i < BOOKS.size(); i++) {
-            if (BOOKS.get(i).getTitle().equals(title)) {
-                BOOKS.get(i).setBooked(false);
-
-                System.out.println(name + " returned " + BOOKS.get(i).getTitle());
-            }
-        }
+        for (int i = 0; i < books.size(); i++)
+            System.out.println(books.get(i));
     }
 
     private static void addBooks() {
@@ -113,8 +84,134 @@ public class Library {
         System.out.print("Enter author's name: ");
         String author = INPUT.nextLine();
 
-        BOOKS.add(new Book(idBook++, title, author, false));
+        books.add(new Book(idBook++, title, author, false));
+        System.out.println("Book added successfully!");
+    }
 
-        System.out.println("Bookio addio");
+    private static void rentBook() {
+        int userId, bookId;
+        boolean valid;
+
+        showUsers("Who wants to rent the book?");
+
+        do {
+            System.out.print("Enter the id of the user: ");
+            userId = readInteger(1, users.size());
+            valid = checkIntroducedUserId(userId);
+        } while (!valid);
+
+        showBooks();
+
+        do {
+            System.out.print("Enter the id of the book: ");
+            bookId = readInteger(1, books.size());
+            valid = checkIntroducedBookId(bookId);
+        } while (!valid);
+
+        books.get(bookId - 1).setBooked(true);
+
+        System.out.println(users.get(userId - 1).getName() + " rented " + books.get(bookId - 1).getTitle());
+    }
+
+    private static boolean checkIntroducedBookId(int id) {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId() == id) {
+                return true;
+            }
+        }
+
+        System.out.println("Book not found.");
+        return false;
+    }
+
+    private static boolean checkIntroducedUserId(int id) {
+
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == id) {
+                return true;
+            }
+        }
+
+        System.out.println("User not found.");
+        return false;
+    }
+
+    private static void showUsers(String message) {
+        System.out.println(message);
+
+        for (int i = 0; i < users.size(); i++)
+            System.out.println(users.get(i));
+    }
+
+    private static void addUser() {
+        System.out.print("Please enter your name: ");
+        String name = INPUT.nextLine();
+
+        System.out.println("Please enter your surname: ");
+        String surname = INPUT.nextLine();
+
+        System.out.print("Please enter your email: ");
+        String email = INPUT.nextLine();
+
+        users.add(new User(idUser++, name, surname, email));
+        System.out.println("User added successfully!");
+    }
+
+    private static void returnBook() {
+        int userId, bookId;
+        boolean valid;
+
+        showUsers("Who wants to return a book?");
+
+        do {
+            System.out.print("Enter the id of the user: ");
+            userId = readInteger(1, users.size());
+            valid = checkIntroducedUserId(userId);
+        } while (!valid);
+
+        System.out.println("Select a book you want to return: ");
+        showRentedBooks();
+
+        do {
+            System.out.print("Enter the id of the book: ");
+            bookId = readInteger(1, books.size());
+            valid = checkIntroducedBookId(bookId);
+            if (!books.get(bookId - 1).isBooked()) {
+                System.out.println("The book is not rented.");
+                valid = false;
+            }
+        } while (!valid);
+
+        books.get(bookId).setBooked(false);
+        System.out.println(users.get(userId - 1).getName() + " returned " + books.get(bookId - 1).getTitle());
+    }
+
+    private static void showRentedBooks() {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).isBooked())
+                System.out.println(books.get(i));
+        }
+    }
+
+    private static int readInteger(int min, int max) {
+        int x = 0;
+        boolean correctValue = false;
+
+        do {
+            if (INPUT.hasNextInt()) {
+                x = INPUT.nextInt();
+                INPUT.nextLine();
+
+                if (x < min || x > max)
+                    System.out.println("Not a valid option, choose between " + min + " and " + max);
+                else
+                    correctValue = true;
+            } else {
+                System.out.println("ERROR: Not an Integer");
+                INPUT.nextLine();
+            }
+        } while (!correctValue);
+
+        return x;
     }
 }

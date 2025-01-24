@@ -14,20 +14,16 @@ public class Book {
         this.id = id;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public boolean isBooked() {
         return booked;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setBooked(boolean booked) {
@@ -36,11 +32,10 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                ", id=" + id +
-                ", author='" + author + '\'' +
-                ", title='" + title + '\'' +
-                ", rented=" + booked +
-                '}';
+        return "Book" +
+                " id: " + id +
+                ", author: " + author +
+                ", title: " + title +
+                ", rented: " + booked;
     }
 }
