@@ -133,22 +133,16 @@ public class Library {
     }
 
     private static boolean checkIntroducedBookId(int id) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getId() == id) {
-                return true;
-            }
-        }
+        for (int i = 0; i < books.size(); i++)
+            if (books.get(i).getId() == id) return true;
 
         System.out.println("Book not found.");
         return false;
     }
 
     private static boolean checkIntroducedUserId(int id) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == id) {
-                return true;
-            }
-        }
+        for (int i = 0; i < users.size(); i++)
+            if (users.get(i).getId() == id) return true;
 
         System.out.println("User not found.");
         return false;
@@ -158,6 +152,7 @@ public class Library {
         int userId, bookId;
         boolean valid;
 
+        if (!checkIfThereAreNoBooksToReturn()) { return; }
         showUsersThatRented();
 
         do {
@@ -180,6 +175,16 @@ public class Library {
 
         books.get(bookId).setBooked(false);
         System.out.println(users.get(userId - 1).getName() + " returned " + books.get(bookId - 1).getTitle());
+    }
+
+    private static boolean checkIfThereAreNoBooksToReturn() {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).isBooked()) {
+                return true;
+            }
+        }
+        System.out.println("There are no books to return.");
+        return false;
     }
 
     private static void showUsersThatRented() {
@@ -224,6 +229,10 @@ public class Library {
         boolean validUser;
         User userToDelete;
 
+        if (checkIfThereAreNoUsers()) {
+            System.out.println("There are no users!");
+            return;
+        }
         showUsers("Select the user you want to delete.");
 
         do {
@@ -240,8 +249,11 @@ public class Library {
                 break;
             }
         }
-
         updateUserIds();
+    }
+
+    private static boolean checkIfThereAreNoUsers() {
+        return users.isEmpty();
     }
 
     private static void updateUserIds() {
@@ -268,7 +280,6 @@ public class Library {
                 INPUT.nextLine();
             }
         } while (!correctValue);
-
         return x;
     }
 }
