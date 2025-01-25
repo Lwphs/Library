@@ -109,7 +109,7 @@ public class Library {
         } while (!validId || !userHasNotRented);
 
         books.get(bookId - 1).setBooked(true);
-        System.out.println(users.get(userId - 1).getName() + " rented " + books.get(bookId - 1).getTitle());
+        System.out.println(users.get(userId - 1).getName() + " " + users.get(userId - 1).getSurname() + " rented " + books.get(bookId - 1).getTitle());
     }
 
     private static boolean checkIfBooksIsNotRentedAlready(int id) {
@@ -175,7 +175,7 @@ public class Library {
         } while (!valid);
 
         books.get(bookId).setBooked(false);
-        System.out.println(users.get(userId - 1).getName() + " returned " + books.get(bookId - 1).getTitle());
+        System.out.println(users.get(userId - 1).getName() + " " + users.get(userId - 1).getSurname() + " returned " + books.get(bookId - 1).getTitle());
     }
 
     private static boolean checkIfThereAreNoBooksToReturn() {

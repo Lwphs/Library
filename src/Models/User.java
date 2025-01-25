@@ -24,6 +24,10 @@ public class User {
         return id;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
     public boolean isHasRentedBook() {
         return hasRentedBook;
     }
