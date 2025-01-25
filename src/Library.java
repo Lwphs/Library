@@ -59,14 +59,14 @@ public class Library {
     }
 
     private static void initializingBooksAndUsers() {
-        books.add(new Book(1, "Book 1", "Author 1", false));
-        books.add(new Book(2, "Book 2", "Author 2", false));
-        books.add(new Book(3, "Book 3", "Author 3", false));
-        books.add(new Book(4, "Book 4", "Author 4", false));
+        books.add(new Book(1, "Maus", "Art Spiegelman", false));
+        books.add(new Book(2, "Cien años de Soledad", "Gabriel García Márquez", false));
+        books.add(new Book(3, "The Odyssey", "Homer", false));
+        books.add(new Book(4, "Wilt", "Tom Sharpe", false));
 
         users.add(new User(1, "Arnau", "Garcia", "Arnau@gmail.com"));
         users.add(new User(2, "Marcel", "Feliu", "Marcel@gmail.com"));
-        users.add(new User(3, "Marcel", "Roquet", "MarcelR@gmail.com"));
+        users.add(new User(3, "Marcelo", "Roquet", "MarcelR@gmail.com"));
         users.add(new User(4, "Pau", "Solé", "Pau@gmail.com"));
     }
 
