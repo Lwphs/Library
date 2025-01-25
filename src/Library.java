@@ -5,17 +5,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Library {
-
     static final Scanner INPUT = new Scanner(System.in);
     private static final ArrayList<Book> books = new ArrayList<>();
     private static final ArrayList<User> users = new ArrayList<>();
 
-    static int idBook = 1;
-    static int idUser = 1;
+    static int idBookCount;
+    static int idUserCount;
 
 
     public static void main(String[] args) {
-
         initializingBooksAndUsers();
 
         int option;
@@ -28,9 +26,10 @@ public class Library {
             System.out.println("4. Return Book");
             System.out.println("5. Add User");
             System.out.println("6. Show Users");
-            System.out.println("7. Exit");
+            System.out.println("7. Delete User");
+            System.out.println("8. Exit");
             System.out.print("Option: ");
-            option = readInteger(1, 6);
+            option = readInteger(1, 8);
 
             switch (option) {
                 case 1:
@@ -52,24 +51,27 @@ public class Library {
                     showUsers("These are the current users.");
                     break;
                 case 7:
+                    deleteUser();
+                    break;
+                case 8:
                     System.out.println("Exiting the program...");
                     break;
                 default:
                     System.out.println("Not a valid option.");
             }
-        } while (option != 7);
+        } while (option != 8);
     }
 
     private static void initializingBooksAndUsers() {
-        books.add(new Book(idBook++, "Book 1", "Author 1", false));
-        books.add(new Book(idBook++, "Book 2", "Author 2", false));
-        books.add(new Book(idBook++, "Book 3", "Author 3", false));
-        books.add(new Book(idBook++, "Book 4", "Author 4", false));
+        books.add(new Book(1, "Book 1", "Author 1", false));
+        books.add(new Book(2, "Book 2", "Author 2", false));
+        books.add(new Book(3, "Book 3", "Author 3", false));
+        books.add(new Book(4, "Book 4", "Author 4", false));
 
-        users.add(new User(idUser++, "Arnau", "Garcia", "Arnau@gmail.com"));
-        users.add(new User(idUser++, "Marcel", "Feliu", "Marcel@gmail.com"));
-        users.add(new User(idUser++, "Marcel", "Roquet", "MarcelR@gmail.com"));
-        users.add(new User(idUser++, "Pau", "Solé", "Pau@gmail.com"));
+        users.add(new User(1, "Arnau", "Garcia", "Arnau@gmail.com"));
+        users.add(new User(2, "Marcel", "Feliu", "Marcel@gmail.com"));
+        users.add(new User(3, "Marcel", "Roquet", "MarcelR@gmail.com"));
+        users.add(new User(4, "Pau", "Solé", "Pau@gmail.com"));
     }
 
     private static void showBooks() {
@@ -84,7 +86,7 @@ public class Library {
         System.out.print("Enter author's name: ");
         String author = INPUT.nextLine();
 
-        books.add(new Book(idBook++, title, author, false));
+        books.add(new Book(idBookCount++, title, author, false));
         System.out.println("Book added successfully!");
     }
 
@@ -109,7 +111,6 @@ public class Library {
         } while (!valid);
 
         books.get(bookId - 1).setBooked(true);
-
         System.out.println(users.get(userId - 1).getName() + " rented " + books.get(bookId - 1).getTitle());
     }
 
@@ -125,7 +126,6 @@ public class Library {
     }
 
     private static boolean checkIntroducedUserId(int id) {
-
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getId() == id) {
                 return true;
@@ -134,27 +134,6 @@ public class Library {
 
         System.out.println("User not found.");
         return false;
-    }
-
-    private static void showUsers(String message) {
-        System.out.println(message);
-
-        for (int i = 0; i < users.size(); i++)
-            System.out.println(users.get(i));
-    }
-
-    private static void addUser() {
-        System.out.print("Please enter your name: ");
-        String name = INPUT.nextLine();
-
-        System.out.println("Please enter your surname: ");
-        String surname = INPUT.nextLine();
-
-        System.out.print("Please enter your email: ");
-        String email = INPUT.nextLine();
-
-        users.add(new User(idUser++, name, surname, email));
-        System.out.println("User added successfully!");
     }
 
     private static void returnBook() {
@@ -190,6 +169,58 @@ public class Library {
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).isBooked())
                 System.out.println(books.get(i));
+        }
+    }
+
+    private static void addUser() {
+        System.out.print("Please enter your name: ");
+        String name = INPUT.nextLine();
+
+        System.out.print("Please enter your surname: ");
+        String surname = INPUT.nextLine();
+
+        System.out.print("Please enter your email: ");
+        String email = INPUT.nextLine();
+
+        users.add(new User(users.getLast().getId() + 1, name, surname, email));
+        System.out.println("User added successfully!");
+    }
+
+    private static void showUsers(String message) {
+        System.out.println(message);
+
+        for (int i = 0; i < users.size(); i++)
+            System.out.println(users.get(i));
+    }
+
+    private static void deleteUser() {
+        int userId;
+        boolean validUser;
+        User userToDelete;
+
+        showUsers("Select the user you want to delete.");
+
+        do {
+            System.out.print("Enter the id of the user: ");
+            userId = readInteger(1, users.size());
+            validUser = checkIntroducedUserId(userId);
+        } while (!validUser);
+
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == userId) {
+                userToDelete = users.get(i);
+                System.out.println(userToDelete.getName() + " has been deleted.");
+                users.remove(i);
+                break;
+            }
+        }
+
+        updateUserIds();
+    }
+
+    private static void updateUserIds() {
+        for (int i = 0; i < users.size(); i++) {
+            users.get(i).setId(i + 1);
         }
     }
 
