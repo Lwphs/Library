@@ -53,6 +53,7 @@ public class Library {
                     break;
                 default:
                     System.out.println("Not a valid option.");
+                    break;
             }
         } while (option != 8);
     }
