@@ -9,13 +9,8 @@ public class Library {
     private static final ArrayList<Book> books = new ArrayList<>();
     private static final ArrayList<User> users = new ArrayList<>();
 
-    static int idBookCount;
-    static int idUserCount;
-
-
     public static void main(String[] args) {
         initializingBooksAndUsers();
-
         int option;
 
         do {
@@ -86,7 +81,7 @@ public class Library {
         System.out.print("Enter author's name: ");
         String author = INPUT.nextLine();
 
-        books.add(new Book(idBookCount++, title, author, false));
+        books.add(new Book(books.getLast().getId() + 1, title, author, false));
         System.out.println("Book added successfully!");
     }
 
