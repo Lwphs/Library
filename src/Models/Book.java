@@ -4,8 +4,7 @@ public class Book {
     private final int id;
     private final String title;
     private final String author;
-
-    private boolean booked = false;
+    private boolean booked;
 
     public Book(int id,  String title, String author, boolean booked) {
         this.booked = booked;

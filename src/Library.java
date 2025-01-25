@@ -87,26 +87,38 @@ public class Library {
 
     private static void rentBook() {
         int userId, bookId;
-        boolean valid;
+        boolean userHasNotRented, validId;
 
         showUsers("Who wants to rent the book?");
 
         do {
             System.out.print("Enter the id of the user: ");
             userId = readInteger(1, users.size());
-            valid = checkIntroducedUserId(userId);
-        } while (!valid);
+            validId = checkIntroducedUserId(userId);
+            userHasNotRented = checkIfUserHasRentedBookAlready(userId);
+        } while (!userHasNotRented && !validId);
 
         showBooks();
 
         do {
             System.out.print("Enter the id of the book: ");
             bookId = readInteger(1, books.size());
-            valid = checkIntroducedBookId(bookId);
-        } while (!valid);
+            validId = checkIntroducedBookId(bookId);
+        } while (!validId);
 
         books.get(bookId - 1).setBooked(true);
         System.out.println(users.get(userId - 1).getName() + " rented " + books.get(bookId - 1).getTitle());
+    }
+
+    private static boolean checkIfUserHasRentedBookAlready(int id) {
+        if (users.get(id - 1).isHasRentedBook()) {
+            System.out.println("This user already has a rented book.");
+            return false;
+        }
+        else {
+            users.get(id - 1).setHasRentedBook(true);
+            return true;
+        }
     }
 
     private static boolean checkIntroducedBookId(int id) {
