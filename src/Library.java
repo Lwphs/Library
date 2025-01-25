@@ -96,7 +96,7 @@ public class Library {
             userId = readInteger(1, users.size());
             validId = checkIntroducedUserId(userId);
             userHasNotRented = checkIfUserHasRentedBookAlready(userId);
-        } while (!userHasNotRented && !validId);
+        } while (!userHasNotRented || !validId);
 
         showBooks();
 
@@ -104,10 +104,21 @@ public class Library {
             System.out.print("Enter the id of the book: ");
             bookId = readInteger(1, books.size());
             validId = checkIntroducedBookId(bookId);
-        } while (!validId);
+            userHasNotRented = checkIfBooksIsNotRentedAlready(bookId);
+        } while (!validId || !userHasNotRented);
 
         books.get(bookId - 1).setBooked(true);
         System.out.println(users.get(userId - 1).getName() + " rented " + books.get(bookId - 1).getTitle());
+    }
+
+    private static boolean checkIfBooksIsNotRentedAlready(int id) {
+        if (books.get(id - 1).isBooked()) {
+            System.out.println("That book is already rented!.");
+            return false;
+        } else {
+            books.get(id - 1).setBooked(true);
+            return true;
+        }
     }
 
     private static boolean checkIfUserHasRentedBookAlready(int id) {
@@ -147,7 +158,7 @@ public class Library {
         int userId, bookId;
         boolean valid;
 
-        showUsers("Who wants to return a book?");
+        showUsersThatRented();
 
         do {
             System.out.print("Enter the id of the user: ");
@@ -155,7 +166,6 @@ public class Library {
             valid = checkIntroducedUserId(userId);
         } while (!valid);
 
-        System.out.println("Select a book you want to return: ");
         showRentedBooks();
 
         do {
@@ -172,7 +182,16 @@ public class Library {
         System.out.println(users.get(userId - 1).getName() + " returned " + books.get(bookId - 1).getTitle());
     }
 
+    private static void showUsersThatRented() {
+        System.out.println("Who wants to return a book?");
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).isHasRentedBook())
+                System.out.println(users.get(i));
+        }
+    }
+
     private static void showRentedBooks() {
+        System.out.println("Select a book you want to return: ");
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).isBooked())
                 System.out.println(books.get(i));
